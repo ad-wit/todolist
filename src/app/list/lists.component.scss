@@ -1,0 +1,16 @@
+.dropdown {
+    padding: 10px;
+    width: 100%;
+}
+
+.delete-item {
+    position: absolute;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+
+div.dropdown-item:hover .delete-item {
+    display: inline;
+}

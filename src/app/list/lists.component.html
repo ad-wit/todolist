@@ -1,0 +1,67 @@
+<div class="categories">
+  <div class="col-md-12">
+    <div class="col-md-12">
+      <select name="category" class="dropdown text-capitalize" #categoryId (change)="updateList(categoryId.value)">
+        <option *ngFor="let category of categories"
+                [value]="category.id" 
+                class="text-capitalize"
+                >{{ category.name }}</option>
+      </select>
+    </div>
+    <div class="col-md-12">
+      <div>
+        <div class="md-form input-group">
+            <input type="text" class="form-control input-sm" placeholder="Add category" #categoryName>
+            <div class="input-group-btn">
+                <button mdbBtn color="primary" size="lg" class="waves-light btn-sm" 
+                  type="button" mdbWavesEffect
+                  (click)="addCategory(categoryName.value); categoryName.value=''"
+                >Add</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="list-items">
+  <div class="col-md-12">
+      <div class="col-md-12">
+          <ul class="list-group">
+              <li class="list-group-item" *ngFor="let item of incompleteListItems">
+                <span>
+                    <input type="checkbox" (change)="updateListItem(item);">
+                  </span>
+                  <span class="ml-2">{{ item.name }}</span>
+                  <span class="text-danger delete-item" (click)="deleteItem(item)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+              </li>
+          </ul>
+      </div>
+      <div class="col-md-12 mt-2">
+        <div class="btn-group" mdbDropdown style="width: 100%">
+          <button mdbDropdownToggle type="button" mdbBtn size="sm" class="dropdown-toggle waves-light default-color" style="width: 100%" mdbWavesEffect>
+            {{ 'Completed('+completeListItems.length+')' }}
+          </button>
+          <div class="dropdown-menu dropdown-primary dropdown-sm" style="width: 100%"  *ngIf="completeListItems.length">
+            <div class="dropdown-item" *ngFor="let item of completeListItems">
+              <input type="checkbox" (change)="updateListItem(item);" checked>
+              <span style="text-decoration: line-through;" class="ml-2">{{ item.name }}</span>
+              <span class="text-danger delete-item" (click)="deleteItem(item)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div>
+          <div class="md-form input-group">
+              <input type="text" class="form-control input-sm" placeholder="Add list-item" #itemName>
+              <div class="input-group-btn">
+                  <button mdbBtn color="success" size="lg" class="waves-light btn-sm" 
+                    type="button" mdbWavesEffect
+                    (click)="addItem(itemName.value, categoryId.value); itemName.value=''"
+                  >Add</button>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
