@@ -1,15 +1,14 @@
-<<<<<<< HEAD
 # TodoApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.1.
 
+## To install dependencies
+
+Run `npm install`
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
@@ -26,7 +25,3 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-=======
-# todolist
-To Do List in angular
->>>>>>> e08fa3948e876ebe6afd3bd0783ea471f654a56f
