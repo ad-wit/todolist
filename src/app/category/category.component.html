@@ -1,0 +1,30 @@
+<div class="categories">
+  <div class="col-md-12">
+    <div class="btn-group" mdbDropdown style="width: 100%" [autoClose]="false" #dropdown="bs-dropdown">
+      <button mdbDropdownToggle type="button" mdbBtn size="md" color="primary" class="dropdown-toggle waves-light default-color" style="width: 100%" mdbWavesEffect>
+        <span *ngIf="selectedCategory != undefined">{{ selectedCategory.name }}</span>
+        <span *ngIf="selectedCategory == undefined">No category!</span>
+      </button>
+      <div class="dropdown-menu dropdown-primary dropdown-sm" style="width: 100%">
+        <div class="dropdown-item" *ngFor="let category of categories">
+          <div (click)="selectedCategory = category; dropdown.toggle();">
+            <span class="ml-2">{{ category.name }}</span>
+            <span class="text-danger delete-item" (click)="deleteCategory(category.id)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="dropdown-item">
+          <div class="md-form input-group">
+            <input type="text" class="form-control form-control-sm" placeholder="Add a new list" #categoryName>
+            <div class="input-group-btn">
+              <button mdbBtn color="success" size="sm" class="waves-light" 
+                type="button" mdbWavesEffect
+                (click)="addCategory(categoryName.value); categoryName.value=''"
+              >Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-lists [selectedCategory]="selectedCategory"></app-lists>

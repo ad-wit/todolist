@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todo.service';
-import { ICategory } from './category';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { TodoService } from '../todo.service';
+import { ICategory } from '../category/category';
 import { IListItem } from './list-item';
 
 @Component({
@@ -10,7 +11,13 @@ import { IListItem } from './list-item';
 })
 export class ListsComponent implements OnInit {
 
-  categories: ICategory[];
+  _selectedCategory: ICategory;
+
+  @Input() set selectedCategory(category: ICategory) {
+
+    this._selectedCategory = category;
+    this.getListItems();
+  };
 
   listItems: IListItem[];
 
@@ -20,76 +27,70 @@ export class ListsComponent implements OnInit {
 
   constructor( private todoService: TodoService ) { }
 
-  getCategories(): void {
-
-    this.categories = this.todoService.getCategories();
-  }
-
   getListItems(): void {
 
-    if( this.categories.length > 0 ) {
+    if( this._selectedCategory != undefined ) {
 
-      let initialId = this.categories[0].id;
-      this.listItems = this.todoService.getListItems(initialId);
+      this.todoService.getListItems(this._selectedCategory.id)
+        .subscribe(
+          (listItems: IListItem[]) => {
+            this.listItems = listItems;
+            this.completeListItems = listItems.filter( (item: IListItem) => item.isComplete == true );
+            this.incompleteListItems = listItems.filter( (item: IListItem) => item.isComplete == false );
+        });
     }
   }
 
-  addCategory(categoryName: string): void {
-    categoryName = categoryName.trim();
-    if( categoryName != '' )
-      this.todoService.addCategory(categoryName);
-  }
+  addListItem(ListItemName: string): void {
 
-  updateList(categoryId: number): void {
+    ListItemName = ListItemName.trim();
 
-    this.listItems = this.todoService.getListItems(categoryId);
-    this.completeListItems = this.listItems.filter((item: IListItem) => item.isComplete == true);
-    this.incompleteListItems = this.listItems.filter((item: IListItem) => item.isComplete == false);
-  }
+    if( ListItemName != '' ) {
 
-  addItem(itemName: string, categoryId: number): void {
-
-    itemName = itemName.trim();
-    if( itemName != '' )
-      this.incompleteListItems.push(this.todoService.addItem(itemName, categoryId));
+      this.todoService.addItem(ListItemName, this._selectedCategory.id)
+        .subscribe(
+          (addedItem: IListItem) => {
+            
+            this.incompleteListItems.push(addedItem);
+            this.listItems.push(addedItem);
+        });
+    }
   }
 
   updateListItem(listItem: IListItem): void {
 
-    listItem.isComplete = !listItem.isComplete;
-
-    if( listItem.isComplete ) {
-      this.incompleteListItems = this.incompleteListItems.filter( (item: IListItem) => item.id != listItem.id );
-      this.completeListItems.push(listItem);
-    } else {
-      this.completeListItems = this.completeListItems.filter( (item: IListItem) => item.id != listItem.id );;
-      this.incompleteListItems.push(listItem);
-    }
-
-    this.todoService.updateListItem(listItem);
+    this.todoService.updateListItem(listItem)
+    .subscribe(
+      (updatedListItem: IListItem) => {
+        
+        if( updatedListItem.isComplete ) {
+          this.incompleteListItems = this.incompleteListItems.filter( (item: IListItem) => item.id != listItem.id );
+          this.completeListItems.push(updatedListItem);
+        } else {
+          this.completeListItems = this.completeListItems.filter( (item: IListItem) => item.id != listItem.id );;
+          this.incompleteListItems.push(updatedListItem);
+        }
+      });
   }
 
-  deleteItem(listItem: IListItem): void {
+  deleteListItem(listItem: IListItem): void {
 
-    this.listItems = this.listItems.filter( (item: IListItem) => item.id != listItem.id );
-
-    if( listItem.isComplete ) {
-      this.completeListItems = this.completeListItems.filter( (item: IListItem) => item.id != listItem.id );
-    } else {
-      this.incompleteListItems = this.incompleteListItems.filter( (item: IListItem) => item.id != listItem.id );
-    }
+    this.todoService.deleteListItem(listItem)
+    .subscribe(
+      (deletedListItem: IListItem) => {
+        
+        this.listItems = this.listItems.filter( (item: IListItem) => item.id != deletedListItem.id );
+    
+        if( deletedListItem.isComplete ) {
+          this.completeListItems = this.completeListItems.filter( (item: IListItem) => item.id != deletedListItem.id );
+        } else {
+          this.incompleteListItems = this.incompleteListItems.filter( (item: IListItem) => item.id != deletedListItem.id );
+        }
+      });
   }
 
   ngOnInit() {
 
-    this.categories = this.todoService.getCategories();
-
-    if( this.categories.length > 0 ) {
-      let initialId = this.categories[0].id;
-      this.listItems = this.todoService.getListItems(initialId);
-      this.completeListItems = this.listItems.filter((item: IListItem) => item.isComplete == true);
-      this.incompleteListItems = this.listItems.filter((item: IListItem) => item.isComplete == false);
-    }
   }
 
 }

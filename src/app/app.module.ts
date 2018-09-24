@@ -5,13 +5,15 @@ import { FormsModule }   from '@angular/forms';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { AppComponent } from './app.component';
+import { TodoService } from './todo.service';
+import { CategoryComponent } from './category/category.component';
 import { ListsComponent } from './list/lists.component';
-import { TodoService } from './list/todo.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListsComponent
+    ListsComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,
