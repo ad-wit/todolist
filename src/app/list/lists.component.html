@@ -13,7 +13,9 @@
       <div class="col-md-12">
         <div>
           <div class="md-form input-group">
-            <input type="text" class="form-control form-control-sm" placeholder="Add something" #itemName>
+            <input type="text" class="form-control form-control-sm" 
+              placeholder="Add something" #itemName 
+              (keyup.enter)="addListItem(itemName.value); itemName.value='';">
             <div class="input-group-btn">
                 <button mdbBtn color="success" size="sm" class="waves-light" 
                   type="button" mdbWavesEffect

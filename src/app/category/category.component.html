@@ -14,11 +14,13 @@
         </div>
         <div class="dropdown-item">
           <div class="md-form input-group">
-            <input type="text" class="form-control form-control-sm" placeholder="Add a new list" #categoryName>
+            <input type="text" class="form-control form-control-sm" 
+              placeholder="Add a new list" #categoryName 
+              (keyup.enter)="addCategory(categoryName.value); categoryName.value=''; dropdown.toggle();">
             <div class="input-group-btn">
               <button mdbBtn color="success" size="sm" class="waves-light" 
                 type="button" mdbWavesEffect
-                (click)="addCategory(categoryName.value); categoryName.value=''"
+                (click)="addCategory(categoryName.value); categoryName.value=''; dropdown.toggle();"
               >Add</button>
             </div>
           </div>
